@@ -49,8 +49,10 @@ function setHeader($type = "x") {
     if (isset($type) && $type === "js") header("Content-Type: application/javascript");
 }
 
-// Determine block page type
-if ($serverName === "pi.hole"
+exit(header("Location: /admin"));
+
+// Determine block page type 
+/*if ($serverName === "pi.hole"
     || (!empty($_SERVER["VIRTUAL_HOST"]) && $serverName === $_SERVER["VIRTUAL_HOST"])) {
     // Redirect to Web Interface
     exit(header("Location: /admin"));
@@ -120,8 +122,7 @@ if ($serverName === "pi.hole"
         </head>
         <body>$blockImg</body>
     </html>");
-}
-
+}*/
 /* Start processing Block Page from here */
 
 // Define admin email address text based off $svEmail presence
