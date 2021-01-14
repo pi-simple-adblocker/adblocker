@@ -1288,7 +1288,10 @@ chooseBlocklists() {
     cmd=(whiptail --separate-output --checklist "Pi-hole relies on third party lists in order to block ads.\\n\\nYou can use the suggestions below, and/or add your own after installation\\n\\nTo deselect any list, use the arrow keys and spacebar" "${r}" "${c}" 5)
     # In an array, show the options available (all off by default):
     options=(StevenBlack "StevenBlack's Unified Hosts List" on
-        MalwareDom "MalwareDomains" on)
+        MalwareDom "MalwareDomains" on 
+        EasyList "Easylist.to" on        
+        ABPFilter "ABP anti-circumvention filter list" on   
+        )
 
     # In a variable, show the choices available; exit if Cancel is selected
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty) || { printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; rm "${adlistFile}" ;exit 1; }
@@ -1308,6 +1311,8 @@ appendToListsFile() {
     case $1 in
         StevenBlack  )  echo "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" >> "${adlistFile}";;
         MalwareDom   )  echo "https://mirror1.malwaredomains.com/files/justdomains" >> "${adlistFile}";;
+        EasyList     )  echo "https://easylist-downloads.adblockplus.org/easylist.txt" >> "${adlistFile}";;
+        ABPFilter   )  echo "https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt" >> "${adlistFile}";;
     esac
 }
 
@@ -1321,6 +1326,8 @@ installDefaultBlocklists() {
     fi
     appendToListsFile StevenBlack
     appendToListsFile MalwareDom
+    appendToListsFile EasyList
+    appendToListsFile ABPFilter    
 }
 
 # Check if /etc/dnsmasq.conf is from pi-hole.  If so replace with an original and install new in .d directory
@@ -2741,7 +2748,8 @@ main() {
         LIGHTTPD_ENABLED=false
     fi
     # Create the pihole user
-    create_pihole_user
+    # no need pihole user 
+    # create_pihole_user  
 
     # Check if FTL is installed - do this early on as FTL is a hard dependency for Pi-hole
     local funcOutput
