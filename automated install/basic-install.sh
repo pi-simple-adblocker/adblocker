@@ -33,7 +33,7 @@ export PATH+=':/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 # It's still a work in progress, so you may see some variance in this guideline until it is complete
 
 # simplify install
-PIHOLE_SKIP_OS_CHECK = true
+PIHOLE_SKIP_OS_CHECK=true
 
 # List of supported DNS servers
 DNS_SERVERS=$(cat << EOM
@@ -2685,7 +2685,7 @@ main() {
     install_dependent_packages "${INSTALLER_DEPS[@]}"
 
     # Check that the installed OS is officially supported - display warning if not
-    os_check
+    # os_check
 
     # Check if SELinux is Enforcing
     checkSelinux
