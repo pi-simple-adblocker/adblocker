@@ -1087,7 +1087,7 @@ setDNS() {
     # exit if Cancel is selected
     #{ printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; exit 1; }
     
-    DNSchoices = "Google (ECS)" "Cloudflare"
+    DNSchoices="Google (ECS)"
     
     # Depending on the user's choice, set the GLOBAl variables to the IP of the respective provider
     if [[ "${DNSchoices}" == "Custom" ]]
@@ -1301,16 +1301,17 @@ chooseBlocklists() {
         mv "${adlistFile}" "${adlistFile}.old"
     fi
     # Let user select (or not) blocklists via a checklist
-    cmd=(whiptail --separate-output --checklist "Pi-hole relies on third party lists in order to block ads.\\n\\nYou can use the suggestions below, and/or add your own after installation\\n\\nTo deselect any list, use the arrow keys and spacebar" "${r}" "${c}" 5)
+    #cmd=(whiptail --separate-output --checklist "Pi-hole relies on third party lists in order to block ads.\\n\\nYou can use the suggestions below, and/or add your own after installation\\n\\nTo deselect any list, use the arrow keys and spacebar" "${r}" "${c}" 5)
     # In an array, show the options available (all off by default):
-    options=(StevenBlack "StevenBlack's Unified Hosts List" on
-        MalwareDom "MalwareDomains" on 
-        EasyList "Easylist.to" on        
-        ABPFilter "ABP anti-circumvention filter list" on   
-        )
+    # options=(StevenBlack "StevenBlack's Unified Hosts List" on
+    #    MalwareDom "MalwareDomains" on 
+    #    EasyList "Easylist.to" on        
+    #    ABPFilter "ABP anti-circumvention filter list" on   
+    #    )
 
     # In a variable, show the choices available; exit if Cancel is selected
-    choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty) || { printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; rm "${adlistFile}" ;exit 1; }
+    #choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty) || { printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; rm "${adlistFile}" ;exit 1; }
+    choices= 0 1 2 3
     # For each choice available,
     for choice in ${choices}
     do
@@ -2705,7 +2706,7 @@ main() {
 
     if [[ "${useUpdateVars}" == false ]]; then
         # Display welcome dialogs
-        welcomeDialogs
+        # welcomeDialogs
         # Create directory for Pi-hole storage
         install -d -m 755 /etc/pihole/
         # Determine available interfaces
