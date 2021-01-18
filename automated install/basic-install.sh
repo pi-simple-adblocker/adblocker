@@ -1242,7 +1242,7 @@ setAdminFlag() {
     # WebToggleCommand=(whiptail --separate-output --radiolist "Do you wish to install the web admin interface?" "${r}" "${c}" 6)
     # with the default being enabled
     # WebChooseOptions=("On (Recommended)" "" on
-        Off "" off)
+    #    Off "" off)
     # WebChoices=$("${WebToggleCommand[@]}" "${WebChooseOptions[@]}" 2>&1 >/dev/tty) || (printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}" && exit 1)
     # Depending on their choice
     #case ${WebChoices} in
