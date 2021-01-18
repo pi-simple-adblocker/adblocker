@@ -1087,7 +1087,7 @@ setDNS() {
     # exit if Cancel is selected
     #{ printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; exit 1; }
     
-    DNSchoices = "Google" "Cloud
+    DNSchoices = "Google (ECS)" "Cloudflare"
     
     # Depending on the user's choice, set the GLOBAl variables to the IP of the respective provider
     if [[ "${DNSchoices}" == "Custom" ]]
