@@ -731,6 +731,7 @@ chooseInterface() {
         # The whiptail command that will be run, stored in a variable
         chooseInterfaceCmd=(whiptail --separate-output --radiolist "Choose An Interface (press space to toggle selection)" "${r}" "${c}" "${interfaceCount}")
         # Now run the command using the interfaces saved into the array
+        # chooseInterfaceOptions=$("${chooseInterfaceCmd[@]}" "${interfacesArray[@]}" 2>&1 >/dev/tty) || \
         chooseInterfaceOptions=$("${chooseInterfaceCmd[@]}" "${interfacesArray[@]}" 2>&1 >/dev/tty) || \
         # If the user chooses Cancel, exit
         { printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; exit 1; }
@@ -739,7 +740,7 @@ chooseInterface() {
             # Set the one the user selected as the interface to use
             PIHOLE_INTERFACE=${desiredInterface}
             # and show this information to the user
-            printf "  %b Using interface: %s\\n" "${INFO}" "${PIHOLE_INTERFACE}"
+            printf "  %b Using interface: %s\\n" "${INFO}" "${PIHOLE_INTERFACE}" "${chooseInterfaceOptions}"
         done
     fi
 }
@@ -1079,11 +1080,15 @@ setDNS() {
     # Restore the IFS to what it was
     IFS=${OIFS}
     # In a whiptail dialog, show the options
-    DNSchoices=$(whiptail --separate-output --menu "Select Upstream DNS Provider. To use your own, select Custom." "${r}" "${c}" 7 \
-    "${DNSChooseOptions[@]}" 2>&1 >/dev/tty) || \
+    
+    #DNSchoices=$(whiptail --separate-output --menu "Select Upstream DNS Provider. To use your own, select Custom." "${r}" "${c}" 7 \
+    #"${DNSChooseOptions[@]}" 2>&1 >/dev/tty) || \
+    
     # exit if Cancel is selected
-    { printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; exit 1; }
-
+    #{ printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}"; exit 1; }
+    
+    DNSchoices = "Google" "Cloud
+    
     # Depending on the user's choice, set the GLOBAl variables to the IP of the respective provider
     if [[ "${DNSchoices}" == "Custom" ]]
     then
@@ -1234,51 +1239,59 @@ setAdminFlag() {
     local WebChoices
 
     # Similar to the logging function, ask what the user wants
-    WebToggleCommand=(whiptail --separate-output --radiolist "Do you wish to install the web admin interface?" "${r}" "${c}" 6)
+    # WebToggleCommand=(whiptail --separate-output --radiolist "Do you wish to install the web admin interface?" "${r}" "${c}" 6)
     # with the default being enabled
-    WebChooseOptions=("On (Recommended)" "" on
+    # WebChooseOptions=("On (Recommended)" "" on
         Off "" off)
-    WebChoices=$("${WebToggleCommand[@]}" "${WebChooseOptions[@]}" 2>&1 >/dev/tty) || (printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}" && exit 1)
+    # WebChoices=$("${WebToggleCommand[@]}" "${WebChooseOptions[@]}" 2>&1 >/dev/tty) || (printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}" && exit 1)
     # Depending on their choice
-    case ${WebChoices} in
-        "On (Recommended)")
-            printf "  %b Web Interface On\\n" "${INFO}"
-            # Set it to true
-            INSTALL_WEB_INTERFACE=true
-            ;;
-        Off)
-            printf "  %b Web Interface Off\\n" "${INFO}"
-            # or false
-            INSTALL_WEB_INTERFACE=false
-            # Deselect the web server as well, since it is obsolete then
-            INSTALL_WEB_SERVER=false
-            ;;
-    esac
+    #case ${WebChoices} in
+    #    "On (Recommended)")
+    #        printf "  %b Web Interface On\\n" "${INFO}"
+    #        # Set it to true
+    #        INSTALL_WEB_INTERFACE=true
+    #        ;;
+    #    Off)
+    #        printf "  %b Web Interface Off\\n" "${INFO}"
+    #        # or false
+    #        INSTALL_WEB_INTERFACE=false
+    #        # Deselect the web server as well, since it is obsolete then
+    #        INSTALL_WEB_SERVER=false
+    #        ;;
+    #esac
 
+    printf "  [i] Web Interface On\\n"    
+    INSTALL_WEB_INTERFACE=true
+    
     # Request user to install web server, if it has not been deselected before (INSTALL_WEB_SERVER=true is default).
-    if [[ "${INSTALL_WEB_SERVER}" == true ]]; then
+    #if [[ "${INSTALL_WEB_SERVER}" == true ]]; then
         # Get list of required PHP modules, excluding base package (common) and handler (cgi)
-        local i php_modules
-        for i in "${PIHOLE_WEB_DEPS[@]}"; do [[ $i == 'php'* && $i != *'-common' && $i != *'-cgi' ]] && php_modules+=" ${i#*-}"; done
-        WebToggleCommand=(whiptail --separate-output --radiolist "Do you wish to install the web server (lighttpd) and required PHP modules?\\n\\nNB: If you disable this, and, do not have an existing web server and required PHP modules (${php_modules# }) installed, the web interface will not function. Additionally the web server user needs to be member of the \"pihole\" group for full functionality." "${r}" "${c}" 6)
+    #    local i php_modules
+    #    for i in "${PIHOLE_WEB_DEPS[@]}"; do [[ $i == 'php'* && $i != *'-common' && $i != *'-cgi' ]] && php_modules+=" ${i#*-}"; done
+    #    WebToggleCommand=(whiptail --separate-output --radiolist "Do you wish to install the web server (lighttpd) and required PHP modules?\\n\\nNB: If you disable this, and, do not have an existing web server and required PHP modules (${php_modules# }) installed, the web interface will not function. Additionally the web server user needs to be member of the \"pihole\" group for full functionality." "${r}" "${c}" 6)
         # Enable as default and recommended option
-        WebChooseOptions=("On (Recommended)" "" on
-            Off "" off)
-        WebChoices=$("${WebToggleCommand[@]}" "${WebChooseOptions[@]}" 2>&1 >/dev/tty) || (printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}" && exit 1)
+    #    WebChooseOptions=("On (Recommended)" "" on
+    #        Off "" off)
+    #    WebChoices=$("${WebToggleCommand[@]}" "${WebChooseOptions[@]}" 2>&1 >/dev/tty) || (printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}" && exit 1)
         # Depending on their choice
-        case ${WebChoices} in
-            "On (Recommended)")
-                printf "  %b Web Server On\\n" "${INFO}"
-                # set it to true, as clearly seen below.
-                INSTALL_WEB_SERVER=true
-                ;;
-            Off)
-                printf "  %b Web Server Off\\n" "${INFO}"
-                # or false
-                INSTALL_WEB_SERVER=false
-                ;;
-        esac
-    fi
+    #    case ${WebChoices} in
+    #        "On (Recommended)")
+    #            printf "  %b Web Server On\\n" "${INFO}"
+    #            # set it to true, as clearly seen below.
+    #            INSTALL_WEB_SERVER=true
+    #            ;;
+    #        Off)
+    #            printf "  %b Web Server Off\\n" "${INFO}"
+    #            # or false
+    #            INSTALL_WEB_SERVER=false
+    #            ;;
+    #    esac
+    #fi
+    
+    local i php_modules
+    for i in "${PIHOLE_WEB_DEPS[@]}"; do [[ $i == 'php'* && $i != *'-common' && $i != *'-cgi' ]] && php_modules+=" ${i#*-}"; done
+    INSTALL_WEB_SERVER=true
+    printf "  [i] Web Server On\\n"    
 }
 
 # A function to display a list of example blocklists for users to select
