@@ -816,7 +816,7 @@ useIPv6dialog() {
 }
 
 # A function to check if we should use IPv4 and/or IPv6 for blocking ads
-use4andor6() {
+use4andor6_dialog() {
     # Named local variables
     local useIPv4
     local useIPv6
@@ -860,6 +860,20 @@ use4andor6() {
         # and exit with an error
         exit 1
     fi
+}
+
+ # A function to check if we should use IPv4 and/or IPv6 for blocking ads
+use4andor6() {   
+    useIPv4=true
+    useIPv6=true
+    # Run our function to get the information we need    
+    find_IPv4_information
+    getStaticIPv4Settings
+    setStaticIPv4
+    useIPv6dialog
+    # Echo the information to the user
+    printf "  %b IPv4 address: %s\\n" "${INFO}" "${IPV4_ADDRESS}"
+    printf "  %b IPv6 address: %s\\n" "${INFO}" "${IPV6_ADDRESS}"    
 }
 
 #
