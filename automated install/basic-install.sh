@@ -1188,46 +1188,50 @@ setLogging() {
     local LogChoices
 
     # Ask if the user wants to log queries
-    LogToggleCommand=(whiptail --separate-output --radiolist "Do you want to log queries?" "${r}" "${c}" 6)
+    # LogToggleCommand=(whiptail --separate-output --radiolist "Do you want to log queries?" "${r}" "${c}" 6)
     # The default selection is on
-    LogChooseOptions=("On (Recommended)" "" on
-        Off "" off)
+    #LogChooseOptions=("On (Recommended)" "" on
+    #    Off "" off)
     # Get the user's choice
-    LogChoices=$("${LogToggleCommand[@]}" "${LogChooseOptions[@]}" 2>&1 >/dev/tty) || (printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}" && exit 1)
-    case ${LogChoices} in
+    #LogChoices=$("${LogToggleCommand[@]}" "${LogChooseOptions[@]}" 2>&1 >/dev/tty) || (printf "  %bCancel was selected, exiting installer%b\\n" "${COL_LIGHT_RED}" "${COL_NC}" && exit 1)
+    #case ${LogChoices} in
         # If it's on
-        "On (Recommended)")
-            printf "  %b Logging On.\\n" "${INFO}"
+    #    "On (Recommended)")
+    #        printf "  %b Logging On.\\n" "${INFO}"
             # Set the GLOBAL variable to true so we know what they selected
-            QUERY_LOGGING=true
-            ;;
+    #        QUERY_LOGGING=true
+    #        ;;
         # Otherwise, it's off,
-        Off)
-            printf "  %b Logging Off.\\n" "${INFO}"
+    #    Off)
+    #        printf "  %b Logging Off.\\n" "${INFO}"
             # So set it to false
-            QUERY_LOGGING=false
-            ;;
-    esac
+    #        QUERY_LOGGING=false
+    #        ;;
+    #esac
+    printf "  %b Logging On.\\n" "${INFO}"
+    # Set the GLOBAL variable to true so we know what they selected
+    QUERY_LOGGING=true
+    
 }
 
 # Allow the user to set their FTL privacy level
 setPrivacyLevel() {
-    local LevelCommand
-    local LevelOptions
+    #local LevelCommand
+    #local LevelOptions
 
-    LevelCommand=(whiptail --separate-output --radiolist "Select a privacy mode for FTL. https://docs.pi-hole.net/ftldns/privacylevels/" "${r}" "${c}" 6)
+    #LevelCommand=(whiptail --separate-output --radiolist "Select a privacy mode for FTL. https://docs.pi-hole.net/ftldns/privacylevels/" "${r}" "${c}" 6)
 
     # The default selection is level 0
-    LevelOptions=(
-        "0" "Show everything" on
-        "1" "Hide domains" off
-        "2" "Hide domains and clients" off
-        "3" "Anonymous mode" off
-    )
+    #LevelOptions=(
+    #    "0" "Show everything" on
+    #    "1" "Hide domains" off
+    #    "2" "Hide domains and clients" off
+    #    "3" "Anonymous mode" off
+    #)
 
     # Get the user's choice
-    PRIVACY_LEVEL=$("${LevelCommand[@]}" "${LevelOptions[@]}" 2>&1 >/dev/tty) || (echo -e "  ${COL_LIGHT_RED}Cancel was selected, exiting installer${COL_NC}" && exit 1)
-
+    #PRIVACY_LEVEL=$("${LevelCommand[@]}" "${LevelOptions[@]}" 2>&1 >/dev/tty) || (echo -e "  ${COL_LIGHT_RED}Cancel was selected, exiting installer${COL_NC}" && exit 1)
+    PRIVACY_LEVEL = "0" # show everything
     printf "  %b Privacy level %d" "${INFO}" "${PRIVACY_LEVEL}"
 }
 
@@ -1321,6 +1325,7 @@ chooseBlocklists() {
     appendToListsFile MalwareDom
     appendToListsFile EasyList
     appendToListsFile ABPFilter
+    
     touch "${adlistFile}"
     chmod 644 "${adlistFile}"
 }
@@ -2837,19 +2842,19 @@ main() {
     /opt/pihole/updatecheck.sh
     /opt/pihole/updatecheck.sh x remote
 
-    if [[ "${useUpdateVars}" == false ]]; then
-        displayFinalMessage "${pw}"
-    fi
+    #if [[ "${useUpdateVars}" == false ]]; then
+    #    displayFinalMessage "${pw}"
+    #fi
 
     # If the Web interface was installed,
-    if [[ "${INSTALL_WEB_INTERFACE}" == true ]]; then
+    #if [[ "${INSTALL_WEB_INTERFACE}" == true ]]; then
         # If there is a password,
-        if (( ${#pw} > 0 )) ; then
+    #    if (( ${#pw} > 0 )) ; then
             # display the password
-            printf "  %b Web Interface password: %b%s%b\\n" "${INFO}" "${COL_LIGHT_GREEN}" "${pw}" "${COL_NC}"
-            printf "  %b This can be changed using 'pihole -a -p'\\n\\n" "${INFO}"
-        fi
-    fi
+    #        printf "  %b Web Interface password: %b%s%b\\n" "${INFO}" "${COL_LIGHT_GREEN}" "${pw}" "${COL_NC}"
+    #        printf "  %b This can be changed using 'pihole -a -p'\\n\\n" "${INFO}"
+    #    fi
+    #fi
 
     if [[ "${useUpdateVars}" == false ]]; then
         # If the Web interface was installed,
