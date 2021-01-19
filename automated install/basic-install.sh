@@ -1231,7 +1231,7 @@ setPrivacyLevel() {
 
     # Get the user's choice
     #PRIVACY_LEVEL=$("${LevelCommand[@]}" "${LevelOptions[@]}" 2>&1 >/dev/tty) || (echo -e "  ${COL_LIGHT_RED}Cancel was selected, exiting installer${COL_NC}" && exit 1)
-    PRIVACY_LEVEL = "0" # show everything
+    PRIVACY_LEVEL="0" # show everything
     printf "  %b Privacy level %d" "${INFO}" "${PRIVACY_LEVEL}"
 }
 
