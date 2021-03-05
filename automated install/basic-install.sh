@@ -2787,9 +2787,8 @@ main() {
     else
         LIGHTTPD_ENABLED=false
     fi
-    # Create the pihole user
-    # no need pihole user 
-    # create_pihole_user  
+    # Create the pihole user 
+    create_pihole_user  
 
     # Check if FTL is installed - do this early on as FTL is a hard dependency for Pi-hole
     local funcOutput
